@@ -1,10 +1,10 @@
 # C# Two-Player BoardGame
 
 ## Purpose
-This project is designed to provide a reusable framework for different two-player board gamesn with design diagrams and applying software design patterns and OOP principles. 
+This project is designed to provide a reusable framework for different two-player board games with design diagrams and applying software design patterns and OOP principles. 
 
 ## Description
-To demostrate that, the framework can be easily adapted to different games. The design must accommodate all the following games in the same software:
+To demonstrate that, the framework can be easily adapted to different games. The design must accommodate all the following games in the same software:
 - `Numerical Tic-Tac-Toe`
 - `Notakto` - Two players take turns placing the same piece (e.g. an X ) on a finite number of 3 × 3 board (in this project, we only
 use three boards). The game ends when all three boards contain a three-in-a-row of X s, at which point the player to have made the last move loses the game.
@@ -21,9 +21,9 @@ use three boards). The game ends when all three boards contain a three-in-a-row 
 6. Provide Help Menu for better user experience
 
 ## Design patterns 
-- Template Method Pattern
-- Factory Pattern
-- Commond Pattern
+- `Template Method Pattern` - Used in Game class and its RunGame()method
+- `Factory Pattern` - Used in GameFactory class and its CreateGame()method
+- `Commond Pattern` - Used in Interface IMoveCommand, PlacePieceCommand class, for implementing the Undo() and Redo() functionality
 
 ## OOP principle
 - Class and Objects
