@@ -21,14 +21,12 @@ use three boards). The game ends when all three boards contain a three-in-a-row 
 6. Provide Help Menu for better user experience
 
 ## Design patterns 
-
-### ** Template Method Pattern **
-### ** Factory Pattern **
-### ** Commond Pattern **
+- Template Method Pattern
+- Factory Pattern
+- Commond Pattern
 
 ## OOP principle
-
-### ** Class and Objects **
-### ** Inheritance **
-### ** Encapsulation **
-### ** Polymorphism **
+- Class and Objects
+- Inheritance
+- Encapsulation
+- Polymorphism 
