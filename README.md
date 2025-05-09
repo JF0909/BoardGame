@@ -24,6 +24,7 @@ use three boards). The game ends when all three boards contain a three-in-a-row 
 - `Template Method Pattern` - Used in Game class and its RunGame()method
 - `Factory Pattern` - Used in GameFactory class and its CreateGame()method
 - `Commond Pattern` - Used in Interface IMoveCommand, PlacePieceCommand class, for implementing the Undo() and Redo() functionality
+- `Composite Pattern` - Used in managing Notakto Game with 3 board.
 
 ## OOP principle
 - Class and Objects
