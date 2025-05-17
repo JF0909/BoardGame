@@ -16,7 +16,7 @@ namespace PlayerBoardGame
 
                 if (currentBoard.IsValidPosition(row, col) && currentBoard.IsCellEmpty(row, col))
                 {
-                    return new Move(this, row, col, PlayerPiece);
+                    return new Move(this, row, col, PlayerPiece,currentBoard.Clone());
                 }
                 else
                 {
