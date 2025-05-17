@@ -9,12 +9,14 @@ namespace PlayerBoardGame
         public int Row { get; }
         public int Col { get; }
         public Piece PiecePlaced { get; }
-        public Move(Player player, int row, int col, Piece piecePlaced)
+        public Board BoardStateBeforeMove { get; }
+        public Move(Player player, int row, int col, Piece piecePlaced, Board boardStateBeforeMove)
         {
             Player = player;
             Row = row;
             Col = col;
             PiecePlaced = piecePlaced;
+            BoardStateBeforeMove = boardStateBeforeMove;
         }
         public override string ToString()
         {
