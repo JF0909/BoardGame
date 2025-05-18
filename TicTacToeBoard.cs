@@ -9,14 +9,14 @@ namespace PlayerBoardGame
 {
     public class TicTacToeBoard : Board
     {
-        public TicTacToeBoard() : base(3, 3)
+        public TicTacToeBoard(int size) : base(size, size)
         {
             SetupInitialBoard();
         }
 
         public override Board Clone()
         {
-            var clone = new TicTacToeBoard();
+            var clone = new TicTacToeBoard(Width);
             for (int row = 0; row < Height; row++)
             {
                 for (int col = 0; col < Width; col++)
@@ -54,8 +54,14 @@ namespace PlayerBoardGame
                 for (int col = 0; col < Width; col++)
                 {
                     var piece = Cells[row, col];
-                    Console.Write(piece == null ? "." : piece.ToString());
-                    Console.Write(" ");
+                    if (piece == null || piece.ToString() == "0")
+                    {
+                        Console.Write(" *  ");
+                    }
+                    else
+                    {
+                        Console.Write($"{piece.ToString(), -3}");
+                    }
                 }
                 Console.WriteLine();
             }
