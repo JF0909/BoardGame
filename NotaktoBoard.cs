@@ -15,9 +15,9 @@ namespace PlayerBoardGame
         {
             subboards = new List<TicTacToeBoard>
             {
-                new TicTacToeBoard(),
-                new TicTacToeBoard(),
-                new TicTacToeBoard()
+                new TicTacToeBoard(3),
+                new TicTacToeBoard(3),
+                new TicTacToeBoard(3)
             };
         }
 
