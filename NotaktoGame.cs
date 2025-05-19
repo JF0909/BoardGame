@@ -67,26 +67,21 @@ namespace PlayerBoardGame
 
         protected override IMoveCommand CreateMoveCommand(Move move)
         {
-            if (CurrentBoard is NotaktoBoard currentNotaktoBoard)
+            if (CurrentBoard == null)
             {
-                if (move is NotaktoMove notaktoMove)
-                {
-                    //TODO: create a new command class?
-                    return new NotaktoPlacePieceCommand(currentNotaktoBoard, notaktoMove);
-                }
-                else
-                {
-                    Console.WriteLine("Error: NotaktoGame's CreateMoveCommand received a non-NotaktoMove.");
-                    throw new ArgumentException("Move must be a NotaktoMove for NotaktoGame.", nameof(move));
-                }
+                Console.WriteLine("Error: CurrentBoard is null in NotaktoGame.");
+                throw new InvalidOperationException("Cannot create a move command without a valid board.");
             }
-            else
+
+            if (!(move is NotaktoMove))
             {
-                Console.WriteLine("Error: CurrentBoard in NotaktoGame is not a NotaktoBoard instance.");
-                throw new InvalidOperationException("CurrentBoard is not of type NotaktoBoard in NotaktoGame.");
+                Console.WriteLine("Error: CreateMoveCommand received a non-NotaktoMove in NotaktoGame.");
+                throw new ArgumentException("Move must be a NotaktoMove for NotaktoGame.", nameof(move));
             }
-           
+            // Create command for Notakto move 
+            return new PlacePieceCommand(CurrentBoard, move);
         }
+        
         protected override Player CheckWinCondition()
         {
             if(MainNotaktoBoard == null) return null;

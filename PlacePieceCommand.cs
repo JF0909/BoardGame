@@ -2,25 +2,46 @@ namespace PlayerBoardGame
 {
     public class PlacePieceCommand : IMoveCommand
     {
-        private readonly Board _targetBoard;
-        private readonly Move _moveDetails; // Contains Player, Row, Col, PiecePlaced
-        private Piece? _originalPieceInCell;
+        private readonly Board _board;
+        private readonly Move _move; // Contains Player, Row, Col, PiecePlaced
+        private Piece? _previousPiece;
 
         public PlacePieceCommand(Board board, Move move)
         {
-            _targetBoard = board;
-            _moveDetails = move;
+            _board = board;
+            _move = move;
         }
 
         public void Execute()
         {
-            _originalPieceInCell = _targetBoard.GetPiece(_moveDetails.Row, _moveDetails.Col);
-            _targetBoard.PlacePiece(_moveDetails.Row, _moveDetails.Col, _moveDetails.PiecePlaced);
+            if (_board is NotaktoBoard notaktoBoard && _move is NotaktoMove notaktoMove)
+            {
+                //Handle Notakto Specific game placement
+                TicTacToeBoard subBoard = notaktoBoard.GetSubBoard(notaktoMove.SubBoardIndex);
+                _previousPiece = subBoard.GetPiece(notaktoMove.Row, notaktoMove.Col);
+                notaktoBoard.PlacePieceOnSubBoard(notaktoMove.SubBoardIndex, notaktoMove.Row, notaktoMove.Col, notaktoMove.PiecePlaced );
+            }
+            else
+            {
+                _previousPiece = _board.GetPiece(_move.Row, _move.Col);
+                _board.PlacePiece(_move.Row, _move.Col, _move.PiecePlaced);
+
+            }
+            
         }
 
         public void Undo()
         {
-            _targetBoard.PlacePiece(_moveDetails.Row, _moveDetails.Col, _originalPieceInCell);
+            if (_board is NotaktoBoard notaktoBoard && _move is NotaktoMove notaktoMove)
+            {
+                //Undo Notakto move
+                notaktoBoard.PlacePieceOnSubBoard(notaktoMove.SubBoardIndex, notaktoMove.Row, notaktoMove.Col, _previousPiece);
+            }
+            else
+            {
+                //Undo standard move for another two games
+                _board.PlacePiece(_move.Row, _move.Col, _previousPiece);
+            }
         }
     }
 }
