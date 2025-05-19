@@ -30,13 +30,13 @@ namespace PlayerBoardGame
         }
 
         //Retrieves the piece at the given position
-        public virtual Piece GetPiece(int row, int col)
+        public virtual Piece ? GetPiece(int row, int col)
         {
-            return IsValidPosition(row,col)? Cells[row,col]:null;
+            return IsValidPosition(row,col) ? Cells[row,col] : null;
         }
 
         //Check if a cell is empty
-        public bool IsCellEmpty(int row, int col)
+        public virtual bool IsCellEmpty(int row, int col)
         {
             return IsValidPosition(row,col) && Cells[row, col] == null;
         }
