@@ -1,0 +1,5 @@
+/Users/venkatsaikarru/Desktop/IFN584 ASSESSMENT 2/BoardGame-1/obj/Debug/net8.0/BoardGame.GeneratedMSBuildEditorConfig.editorconfig
+/Users/venkatsaikarru/Desktop/IFN584 ASSESSMENT 2/BoardGame-1/obj/Debug/net8.0/BoardGame.AssemblyInfoInputs.cache
+/Users/venkatsaikarru/Desktop/IFN584 ASSESSMENT 2/BoardGame-1/obj/Debug/net8.0/BoardGame.AssemblyInfo.cs
+/Users/venkatsaikarru/Desktop/IFN584 ASSESSMENT 2/BoardGame-1/obj/Debug/net8.0/BoardGame.csproj.CoreCompileInputs.cache
+/Users/venkatsaikarru/Desktop/IFN584 ASSESSMENT 2/BoardGame-1/obj/Debug/net8.0/BoardGame.sourcelink.json

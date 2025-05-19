@@ -8,19 +8,19 @@
     "net8.0": []
   },
   "packageFolders": {
-    "/Users/jingwenfu/.nuget/packages/": {}
+    "/Users/venkatsaikarru/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/jingwenfu/BoardGame/BoardGame.csproj",
+      "projectUniqueName": "/Users/venkatsaikarru/Desktop/IFN584 ASSESSMENT 2/BoardGame-1/BoardGame.csproj",
       "projectName": "BoardGame",
-      "projectPath": "/Users/jingwenfu/BoardGame/BoardGame.csproj",
-      "packagesPath": "/Users/jingwenfu/.nuget/packages/",
-      "outputPath": "/Users/jingwenfu/BoardGame/obj/",
+      "projectPath": "/Users/venkatsaikarru/Desktop/IFN584 ASSESSMENT 2/BoardGame-1/BoardGame.csproj",
+      "packagesPath": "/Users/venkatsaikarru/.nuget/packages/",
+      "outputPath": "/Users/venkatsaikarru/Desktop/IFN584 ASSESSMENT 2/BoardGame-1/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/jingwenfu/.nuget/NuGet/NuGet.Config"
+        "/Users/venkatsaikarru/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -64,7 +64,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.406/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.407/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
