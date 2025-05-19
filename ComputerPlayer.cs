@@ -1,6 +1,11 @@
 
 namespace PlayerBoardGame
 {
+    /// <summary>
+    /// Computer Player
+    /// For Notakto, the AI will try to find a move that doesn't lose immediately
+    /// For another 2 games, try find a winning move, otherwise random move
+    /// </summary>
     public class ComputerPlayer : Player
     {
         public ComputerPlayer(string name, Piece piece) : base(name, piece){ }
