@@ -6,15 +6,9 @@ namespace PlayerBoardGame
     /// </summary>
     public abstract class Game
     {
-        //signal for human player commands from HumanPlayer.GetMove()
-        public static readonly Move UndoSignal = new Move(null!, -1, -1, null!, null!);
-        public static readonly Move RedoSignal = new Move(null!, -2, -1, null!, null!);
-        public static readonly Move SaveSignal = new Move(null!, -3, -1, null!, null!);
-        public static readonly Move LoadSignal = new Move(null!, -4, -1, null!, null!);
-        public static readonly Move HelpSignal = new Move(null!, -5, -1, null!, null!);
-        public static readonly Move QuitSignal = new Move(null!, -6, -1, null!, null!);
-
-
+        //Enum for game command
+        public enum GameCommand { Undo, Redo, Save, Load, Help, Quit, None }
+       
         //Property
         protected Board CurrentBoard;
         protected List<Player> Players;
@@ -55,125 +49,105 @@ namespace PlayerBoardGame
                 Console.WriteLine("Type 'help' for commands (undo, redo, save, load, quit) or enter your move.");
 
                 Move ? playerInput = CurrentPlayer.GetMove(CurrentBoard);
+                GameCommand command = ParseGameCommand(playerInput);
 
-                bool commandProcessedTurns = false;
-
-                //process specific commands
-                if (playerInput == UndoSignal)
+                switch (command)
                 {
-                    if (UndoMove()) commandProcessedTurns = true;
-                   
-                }
-                else if (playerInput == RedoSignal)
-                {
-                    if (RedoMove()) commandProcessedTurns = true;
-                }
-                else if (playerInput == SaveSignal)
-                {
-                    SaveGame();
-                    commandProcessedTurns = true; 
-                }
-                else if (playerInput == LoadSignal)
-                {
-                    LoadGame(); // LoadGame will change CurrentPlayer, IsGameOver..
-                    commandProcessedTurns = true; 
-                }
-                else if (playerInput == HelpSignal)
-                {
-                    DisplayHelp();
-                    commandProcessedTurns = true; // Help doesn't end the turn
-                }
-                else if (playerInput == QuitSignal)
-                {
-                    Console.WriteLine("You chose to quit the game.");
-                    IsGameOver = true;
-                    commandProcessedTurns = true;
-                }
-                else if (playerInput != null)
-                {
-                    if (IsMoveValid(playerInput))
-                    {
-                        ApplyMove(playerInput);
-
-                        Player ? winner = CheckWinCondition();
-                        if (winner != null)
+                    case GameCommand.Undo:
+                        if (UndoMove()) continue;
+                        break;
+                    case GameCommand.Redo:
+                        if (RedoMove()) continue;
+                        break;
+                    case GameCommand.Save:
+                        SaveGame();
+                        continue;
+                    case GameCommand.Load:
+                        LoadGame();
+                        continue;
+                    case GameCommand.Help:
+                        DisplayHelp();
+                        continue;
+                    case GameCommand.Quit:
+                        Console.WriteLine("You chose to quit the game.");
+                        IsGameOver = true;
+                        break;
+                    case GameCommand.None:
+                        //process regular move
+                        if (playerInput != null && IsMoveValid(playerInput))
                         {
-                            IsGameOver = true;
-                            DisplayBoard();
-                            Console.WriteLine($"\nGame Over! {winner.Name} ({winner.PlayerPiece?.Symbol}) wins!");
-                        }
-                        else if (CheckDrawCondition())
-                        {
-                            IsGameOver = true;
-                            DisplayBoard();
-                            Console.WriteLine("\nGame Over! It's a draw!");
-                        }
+                            ApplyMove(playerInput);
 
-                        if (!IsGameOver)
-                        {
-                            SwitchPlayer();
+                            Player ? winner = CheckWinCondition();
+                            if (winner != null)
+                            {
+                                IsGameOver = true;
+                                DisplayBoard();
+                                Console.WriteLine($"\nGame Over! {winner.Name} ({winner.PlayerPiece?.Symbol}) wins!");
+                            }
+                            else if (CheckDrawCondition())
+                            {
+                                IsGameOver = true;
+                                DisplayBoard();
+                                Console.WriteLine("\nGame Over! It's a draw!");
+                            }
+                            if (!IsGameOver) SwitchPlayer();
                         }
-                    }
-                    else
-                    {
-                        //Invalid piece placement move attempt
-                        if(CurrentPlayer is HumanPlayer)
+                        else
                         {
-                            Console.WriteLine("That move is not valid, please try again.");
+                            Console.WriteLine("Invalid move, please try again.");
                         }
-                    }
-                }
-                else
-                {
-                    //if playerinput was null
-                    if (CurrentPlayer is HumanPlayer)
-                    {
-                        Console.WriteLine(" Unrecognized input or invalid move format. Type 'help' for commands.");
-                    }
-                }
+                        break;
 
-                if (IsGameOver)
-                {
-                    break;
                 }
-
-               
+   
             }
             Console.WriteLine("Game Over!");
         }
 
-        //Create initial board
+        private GameCommand ParseGameCommand(Move? move)
+        {
+            if (move == null) return GameCommand.None;
+            return move.Row switch
+            {
+                -1 => GameCommand.Undo,
+                -2 => GameCommand.Redo,
+                -3 => GameCommand.Save,
+                -4 => GameCommand.Load,
+                -5 => GameCommand.Help,
+                -6 => GameCommand.Quit,
+                _ => GameCommand.None
+
+            };
+        }
+
         protected abstract Board CreateInitialBoard();
-
-        //Create the players based on game mode
         protected abstract List<Player> CreatePlayers(GameMode mode);
-
-        //Validates a move
         protected abstract bool IsMoveValid(Move move);
-
-        //Check if a player has won the game
         protected abstract Player CheckWinCondition();
-
-        //Check for a draw
         protected abstract bool CheckDrawCondition();
 
         //Apply a move using Command Pattern
         protected virtual void ApplyMove(Move move)
         {
             IMoveCommand command = CreateMoveCommand(move);
-            command.Execute();
-
-            MoveHistory.Add(command);
-            RedoHistory.Clear();
-         
+            if (command != null)
+            {
+                command.Execute();
+                MoveHistory.Add(command);
+                RedoHistory.Clear();
+            }
+            else
+            {
+                Console.WriteLine("Error: Invalid move command.");
+            }
+            
         }
 
         protected virtual IMoveCommand CreateMoveCommand(Move move)
         {
             return new PlacePieceCommand(this.CurrentBoard, move);
         }
-
-      
 
         //Switches to the next Player
         public void SwitchPlayer()
@@ -223,20 +197,16 @@ namespace PlayerBoardGame
             CurrentBoard.Display();
         }
 
-        //Save the game state
         public void SaveGame(string filePath)
         {
-            // TODO: implement until board, game subclasses are finished
-
+            // TODO
         }
 
         //Load a saved game
         public void LoadGame(string filePath)
         {
-            // TODO: implement until board, game subclasses are finished
-
+            // TODO
         }
-
         protected virtual void DisplayHelp()
         {
             Console.WriteLine("\n--- Help ---");
@@ -250,10 +220,6 @@ namespace PlayerBoardGame
             Console.WriteLine("  quit          - Exit the current game.");
             Console.WriteLine("  help          - Show this help information.");
             Console.WriteLine("--------------");
-
         }
-        
-        
-
     }
 }
