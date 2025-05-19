@@ -39,7 +39,7 @@ namespace PlayerBoardGame
                 row = random.Next(currentBoard.Height);
                 col = random.Next(currentBoard.Width);
             } while (!currentBoard.IsValidPosition(row, col) || !currentBoard.IsCellEmpty(row,col));
-            return new Move(this, row, col, this.PlayerPiece, currentBoard.Clone());
+            return new Move(this,row,col,this.PlayerPiece, currentBoard.Clone());
             
         }
     

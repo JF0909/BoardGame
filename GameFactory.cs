@@ -5,7 +5,7 @@ namespace PlayerBoardGame
     /// </summary>
     public static class GameFactory
     {
-        public static GameFactory CreateGame(GameType type, GameMode mode)
+        public static Game CreateGame(GameType type, GameMode mode)
         {
             switch (type)
             {
