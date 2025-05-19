@@ -21,7 +21,7 @@ namespace PlayerBoardGame
                 }
             }
         }
-        public override Move GetMove(Board currentBoard)
+        public override IMoveCommand GetMove(Board currentBoard)
         {
             Console.WriteLine($"\n{Name} ({PlayerPiece.Symbol}), it's your turn.");
             currentBoard.Display();
@@ -49,7 +49,8 @@ namespace PlayerBoardGame
 
                     if(targetSubBoard.IsValidPosition(row, col) && targetSubBoard.IsCellEmpty(row, col))
                     {
-                        return new NotaktoMove(this, subBoardIndex, row, col, this.PlayerPiece, currentBoard.Clone());
+                        Move move = new NotaktoMove(this, subBoardIndex, row, col, this.PlayerPiece, currentBoard.Clone());
+                        return new PlacePieceCommand(currentBoard, move);
                     }
                     else
                     {
@@ -68,7 +69,9 @@ namespace PlayerBoardGame
 
                     if (currentBoard.IsValidPosition(row, col) && currentBoard.IsCellEmpty(row, col))
                     {
-                        return new Move(this, row, col, this.PlayerPiece, currentBoard.Clone());
+                        Move move = new Move(this, row, col, this.PlayerPiece, currentBoard.Clone());
+                        return new PlacePieceCommand(currentBoard, move);
+
                     }
                     else
                     {

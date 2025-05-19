@@ -31,7 +31,6 @@ namespace PlayerBoardGame
         {
             //TODO: calling game specific logic in here
             //For each potential move, clone the board, place the piece on the clone
-            //call CheckWinCondition() to verify the winning move
             return null;
         }
 
