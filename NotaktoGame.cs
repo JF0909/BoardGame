@@ -65,29 +65,27 @@ namespace PlayerBoardGame
 
         }
 
-        protected override void ApplyMove(Move move)
+        protected override IMoveCommand CreateMoveCommand(Move move)
         {
-            if (!(move is NotaktoMove notaktoMove))
+            if (CurrentBoard is NotaktoBoard currentNotaktoBoard)
             {
-                Console.WriteLine("Error: ApplyMove called with non-NotaktoMove in NotaktoGame.");
-                IsGameOver = true;
-                return;
+                if (move is NotaktoMove notaktoMove)
+                {
+                    return new NotaktoPlacePieceCommand(currentNotaktoBoard, notaktoMove);
+                }
+                else
+                {
+                    Console.WriteLine("Error: NotaktoGame's CreateMoveCommand received a non-NotaktoMove.");
+                    throw new ArgumentException("Move must be a NotaktoMove for NotaktoGame.", nameof(move));
+                }
             }
-
-            bool success = MainNotaktoBoard.PlacePieceOnSubBoard(
-                notaktoMove.SubBoardIndex,
-                notaktoMove.Row,
-                notaktoMove.Col,
-                notaktoMove.PiecePlaced
-            );
-
-            if (!success)
+            else
             {
-                Console.WriteLine("Error: ApplyMove failed to place piece in NotaktoGame, despite IsMoveValid passing.");
-
+                Console.WriteLine("Error: CurrentBoard in NotaktoGame is not a NotaktoBoard instance.");
+                throw new InvalidOperationException("CurrentBoard is not of type NotaktoBoard in NotaktoGame.");
             }
+           
         }
-
         protected override Player CheckWinCondition()
         {
             if(MainNotaktoBoard == null) return null;
