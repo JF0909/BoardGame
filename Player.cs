@@ -12,7 +12,7 @@ namespace PlayerBoardGame
             Name = name;
             PlayerPiece = piece;
         }
-        public abstract Move GetMove(Board currentBoard);
+        public abstract IMoveCommand GetMove(Board currentBoard);
         public override string ToString()
         {
             return $"{Name} ({PlayerPiece})";
