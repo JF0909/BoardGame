@@ -3,7 +3,7 @@ namespace PlayerBoardGame
     public class PlacePieceCommand : IMoveCommand
     {
         private readonly Board _board;
-        private readonly Move _move; // Contains Player, Row, Col, PiecePlaced
+        private readonly Move _move; 
         private Piece? _previousPiece;
 
         public PlacePieceCommand(Board board, Move move)
@@ -11,6 +11,8 @@ namespace PlayerBoardGame
             _board = board;
             _move = move;
         }
+
+        public Move MoveData => _move;// return current move info, used in game.cs
 
         public void Execute()
         {

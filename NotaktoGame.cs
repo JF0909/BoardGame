@@ -31,7 +31,7 @@ namespace PlayerBoardGame
             else
             {
                 //HumanVsComputer
-                players.Add(new ComputerPlayer("Computer", SharedPiece));
+                players.Add(new ComputerPlayer("Computer", SharedPiece, this));
             }
             return players;
         }
@@ -81,7 +81,7 @@ namespace PlayerBoardGame
             // Create command for Notakto move 
             return new PlacePieceCommand(CurrentBoard, move);
         }
-        
+
         protected override Player CheckWinCondition()
         {
             if(MainNotaktoBoard == null) return null;
@@ -104,6 +104,7 @@ namespace PlayerBoardGame
             }
             return null;
         }
+
 
         protected override bool CheckDrawCondition()
         {

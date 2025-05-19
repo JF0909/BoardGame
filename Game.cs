@@ -48,7 +48,9 @@ namespace PlayerBoardGame
                 Console.WriteLine($"\n{CurrentPlayer.Name}'s turn ({CurrentPlayer.PlayerPiece?.Symbol}).");
                 Console.WriteLine("Type 'help' for commands (undo, redo, save, load, quit) or enter your move.");
 
-                Move ? playerInput = CurrentPlayer.GetMove(CurrentBoard);
+                IMoveCommand moveCommand = CurrentPlayer.GetMove(CurrentBoard);
+                Move ? playerInput = moveCommand?.MoveData;
+                
                 GameCommand command = ParseGameCommand(playerInput);
 
                 switch (command)
@@ -220,6 +222,12 @@ namespace PlayerBoardGame
             Console.WriteLine("  quit          - Exit the current game.");
             Console.WriteLine("  help          - Show this help information.");
             Console.WriteLine("--------------");
+        }
+
+        //public method for computerPlayer access
+        public Player? GetWinner()
+        {
+            return CheckWinCondition();
         }
     }
 }

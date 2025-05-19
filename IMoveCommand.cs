@@ -4,5 +4,6 @@ namespace PlayerBoardGame
     {
         void Execute();
         void Undo();
+        Move MoveData { get; } // used in command and game class
     }
 }
