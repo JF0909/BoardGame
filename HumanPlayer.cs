@@ -59,6 +59,7 @@ namespace PlayerBoardGame
             }
             else
             {
+                //Logic for another 2 games
                 int row, col;
                 while (true)
                 {

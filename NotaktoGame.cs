@@ -71,6 +71,7 @@ namespace PlayerBoardGame
             {
                 if (move is NotaktoMove notaktoMove)
                 {
+                    //TODO: create a new command class?
                     return new NotaktoPlacePieceCommand(currentNotaktoBoard, notaktoMove);
                 }
                 else
