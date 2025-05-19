@@ -47,7 +47,7 @@ namespace PlayerBoardGame
         //Apply a move for childclasses to override
         protected virtual void ApplyMove(Move move)
         {
-
+            CurrentBoard.PlacePiece(move.Row, move.Col, move.PiecePlaced);
         }
 
         //Check if a player has won the game
