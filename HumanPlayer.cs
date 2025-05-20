@@ -3,84 +3,82 @@ namespace PlayerBoardGame
     public class HumanPlayer: Player
     {
         public HumanPlayer(string name, Piece piece) : base( name, piece) { }
-        //Validate integer input
-        private int GetValidatedIntInput (string prompt, int min, int max)
+        public override (Game.GameCommand command, Move? moveDetails) GetMove(Board currentBoard)
         {
-            int value;
+            //HumanPlayer will get message until get a valid piece move
             while (true)
             {
-                Console.Write($"{prompt} ({min}-{max}): ");
-                string? input = Console.ReadLine();
-                if (int.TryParse(input, out value) && value >= min && value <= max)
+                Console.Write($"{Name},Please enter your move ( '0,0' or 'undo', 'help'): ");
+                string? rawInput = Console.ReadLine()?.Trim().ToLower();
+
+                if (string.IsNullOrEmpty(rawInput))
                 {
-                    return value;
+                    Console.WriteLine("Invalid input, cannot be empty.");
+                    continue; 
                 }
-                else
+
+                Game.GameCommand systemCommand = ParseGameCommand(rawInput);
+                if (systemCommand != Game.GameCommand.None) 
                 {
-                    Console.WriteLine($"Invalid input. Please enter a whole number between {min} and {max}.");
+                    return (systemCommand, null); 
                 }
+
+                Move? placementMove = ParsePlacementMove(rawInput, currentBoard);
+                if (placementMove != null)
+                {
+                    return (Game.GameCommand.MakeMove, placementMove); 
+                }
+                Console.WriteLine("Invalid move, please enter 'row, col'(e.g.(0, 1))");
+                if (currentBoard is NotaktoBoard)
+                {
+                    Console.WriteLine("For Notakto Game, Please enter boardIndex, row, col(e.g. '1,0,0')");
+                }
+                Console.WriteLine("Or enter 'help can check command info");
             }
         }
-        public override IMoveCommand GetMove(Board currentBoard)
+
+        //Parse system commands
+        private Game.GameCommand ParseGameCommand(string input)
         {
-            Console.WriteLine($"\n{Name} ({PlayerPiece.Symbol}), it's your turn.");
-            currentBoard.Display();
-
-            if (currentBoard is NotaktoBoard notaktoBoard)
+            return input switch
             {
-                int subBoardIndex, row, col;
-                while (true)
-                {
-                    Console.WriteLine("Playing on Notakto Board (select an active sub-board).");
-                    subBoardIndex = GetValidatedIntInput("Enter target sub-board index", 1, notaktoBoard.SubBoardCount) - 1;
-
-                    if (notaktoBoard.IsSubBoardFinished(subBoardIndex))
-                    {
-                        Console.WriteLine($"Sub-board {subBoardIndex + 1} is already finished. Please choose an active board.");
-                        notaktoBoard.Display();
-                        continue;
-                    }
-
-                    TicTacToeBoard targetSubBoard = notaktoBoard.GetSubBoard(subBoardIndex);
-                    Console.WriteLine($"Selected Sub-Board {subBoardIndex + 1}.");
-
-                    row = GetValidatedIntInput($"Enter row for sub-board {subBoardIndex + 1}", 1, targetSubBoard.Height) - 1;
-                    col = GetValidatedIntInput($"Enter column for sub-board {subBoardIndex + 1}", 1, targetSubBoard.Width) - 1;
-
-                    if(targetSubBoard.IsValidPosition(row, col) && targetSubBoard.IsCellEmpty(row, col))
-                    {
-                        Move move = new NotaktoMove(this, subBoardIndex, row, col, this.PlayerPiece, currentBoard.Clone());
-                        return new PlacePieceCommand(currentBoard, move);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid move on the sub-board (cell occupied or out of bounds). Please try again.");
-                    }
-                }
-            }
-            else
-            {
-                //Logic for another 2 games
-                int row, col;
-                while (true)
-                {
-                    row = GetValidatedIntInput("Enter row", 1,currentBoard.Height) - 1;
-                    col = GetValidatedIntInput("Enter column",1,currentBoard.Width) - 1;
-
-                    if (currentBoard.IsValidPosition(row, col) && currentBoard.IsCellEmpty(row, col))
-                    {
-                        Move move = new Move(this, row, col, this.PlayerPiece, currentBoard.Clone());
-                        return new PlacePieceCommand(currentBoard, move);
-
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid move (position out of bounds or cell occupied). Please try again.");
-                    }
-                }
-
-            }
-            
+                "u" or "undo" => Game.GameCommand.Undo,
+                "r" or "redo" => Game.GameCommand.Redo,
+                "s" or "save" => Game.GameCommand.Save,
+                "l" or "load" => Game.GameCommand.Load,
+                "h" or "help" => Game.GameCommand.Help,
+                "q" or "quit" => Game.GameCommand.Quit,
+                _ => Game.GameCommand.None
+            };
         }
+
+        //parse user input as move placement(Move / NotaktoMove)
+        private Move? ParsePlacementMove(string input, Board currentBoard)
+        {
+            string[] parts = input.Split(',');
+
+            if (currentBoard is NotaktoBoard notaktoBoard) 
+            {
+                if (parts.Length == 3 &&
+                    int.TryParse(parts[0].Trim(), out int boardIdxOneBased) && 
+                    int.TryParse(parts[1].Trim(), out int row) &&         
+                    int.TryParse(parts[2].Trim(), out int col))           
+                {
+                    int subBoardIndex = boardIdxOneBased - 1; 
+                    return new NotaktoMove(this, subBoardIndex, row, col, this.PlayerPiece, currentBoard.Clone());
+                }
+            }
+            else 
+            {
+                //For Tictactoe, Gomoku
+                if (parts.Length == 2 &&
+                    int.TryParse(parts[0].Trim(), out int row) && 
+                    int.TryParse(parts[1].Trim(), out int col))   
+                {
+                    return new Move(this, row, col, this.PlayerPiece, currentBoard.Clone());
+                }
+            }
+            return null; 
+        } 
     }
 }

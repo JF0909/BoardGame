@@ -31,7 +31,7 @@ namespace PlayerBoardGame
             else
             {
                 //HumanVsComputer
-                players.Add(new ComputerPlayer("Computer", SharedPiece, this));
+                players.Add(new ComputerPlayer("Computer", SharedPiece));
             }
             return players;
         }
@@ -73,13 +73,23 @@ namespace PlayerBoardGame
                 throw new InvalidOperationException("Cannot create a move command without a valid board.");
             }
 
-            if (!(move is NotaktoMove))
+            if (CurrentBoard is NotaktoBoard currentNotaktoBoard)
             {
-                Console.WriteLine("Error: CreateMoveCommand received a non-NotaktoMove in NotaktoGame.");
-                throw new ArgumentException("Move must be a NotaktoMove for NotaktoGame.", nameof(move));
+                if (move is NotaktoMove notaktoMove)
+                {
+                    return new NotaktoCommand(currentNotaktoBoard, notaktoMove);
+                }
+                else
+                {
+                    Console.WriteLine("Error: CreateMoveCommand in NotaktoGame received a non-NotaktoMove.");
+                    throw new ArgumentException("Move must be a NotaktoMove for NotaktoGame's CreateMoveCommand.", nameof(move));
+                }
             }
-            // Create command for Notakto move 
-            return new PlacePieceCommand(CurrentBoard, move);
+            else
+            {
+                Console.WriteLine("Error: CurrentBoard in NotaktoGame is not a NotaktoBoard instance during CreateMoveCommand.");
+                throw new InvalidOperationException("CurrentBoard is not of type NotaktoBoard in NotaktoGame.");
+            }
         }
 
         protected override Player CheckWinCondition()

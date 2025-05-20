@@ -1,5 +1,9 @@
 namespace PlayerBoardGame
 {
+    /// <summary>
+    /// Command to place a piece on a standard board
+    /// Apply for TicTacToe and Gomoku
+    /// </summary>
     public class PlacePieceCommand : IMoveCommand
     {
         private readonly Board _board;
@@ -12,38 +16,17 @@ namespace PlayerBoardGame
             _move = move;
         }
 
-        public Move MoveData => _move;// return current move info, used in game.cs
-
         public void Execute()
         {
-            if (_board is NotaktoBoard notaktoBoard && _move is NotaktoMove notaktoMove)
-            {
-                //Handle Notakto Specific game placement
-                TicTacToeBoard subBoard = notaktoBoard.GetSubBoard(notaktoMove.SubBoardIndex);
-                _previousPiece = subBoard.GetPiece(notaktoMove.Row, notaktoMove.Col);
-                notaktoBoard.PlacePieceOnSubBoard(notaktoMove.SubBoardIndex, notaktoMove.Row, notaktoMove.Col, notaktoMove.PiecePlaced );
-            }
-            else
-            {
-                _previousPiece = _board.GetPiece(_move.Row, _move.Col);
-                _board.PlacePiece(_move.Row, _move.Col, _move.PiecePlaced);
-
-            }
-            
+            //Store what was in the cell before placing the new piece (for Undo)
+            _previousPiece = _board.GetPiece(_move.Row, _move.Col);
+            //Execute the move by placing the piece
+            _board.PlacePiece(_move.Row, _move.Col, _move.PiecePlaced);
         }
 
         public void Undo()
         {
-            if (_board is NotaktoBoard notaktoBoard && _move is NotaktoMove notaktoMove)
-            {
-                //Undo Notakto move
-                notaktoBoard.PlacePieceOnSubBoard(notaktoMove.SubBoardIndex, notaktoMove.Row, notaktoMove.Col, _previousPiece);
-            }
-            else
-            {
-                //Undo standard move for another two games
-                _board.PlacePiece(_move.Row, _move.Col, _previousPiece);
-            }
+           _board.PlacePiece(_move.Row, _move.Col, _previousPiece);
         }
     }
 }

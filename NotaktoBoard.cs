@@ -13,9 +13,12 @@ namespace PlayerBoardGame
         private List<TicTacToeBoard> subBoards;
         private List<bool> subBoardFinishedStates;
         public const int NumberOfSubBoards = 3;
+        //Store the piece for checking
+        private readonly Piece _notaktoPiece;
 
         public NotaktoBoard() : base(0, 0)
         {
+            _notaktoPiece = new Piece("X");
             subBoards = new List<TicTacToeBoard>();
             subBoardFinishedStates = new List<bool>();
 
@@ -80,6 +83,33 @@ namespace PlayerBoardGame
             Console.WriteLine($"Error: Invalid move on sub-board {subBoardIndex + 1} at ({row},{col}). Cell not empty or out of bounds.");
             return false;
         }
+
+        //Remove piece and re-check method
+        public void RemovePieceOnSubBoard (int subBoardIndex, int row, int col)
+        {
+            if (subBoardIndex < 0 || subBoardIndex >= subBoards.Count)
+            {
+                Console.WriteLine($"Error: Invalid sub-board index {subBoardIndex} in RemovePieceOnSubBoard.");
+                return;
+            }
+            TicTacToeBoard targetSubBoard = subBoards[subBoardIndex];
+            if (!targetSubBoard.IsValidPosition(row, col))
+            {
+                Console.WriteLine($"Error: Invalid coordinates ({row},{col}) for sub-board {subBoardIndex + 1} in RemovePieceOnSubBoard.");
+                return;
+            }
+
+            targetSubBoard.PlacePiece(row, col, null);
+            if (CheckThreeInARow(targetSubBoard, _notaktoPiece))
+            {
+                subBoardFinishedStates[subBoardIndex] = true;
+            }
+            else
+            {
+                subBoardFinishedStates[subBoardIndex] = false; 
+            }
+        }
+
 
         private bool CheckThreeInARow(TicTacToeBoard board, Piece piece)
         {
@@ -148,10 +178,12 @@ namespace PlayerBoardGame
 
         public override void SetupInitialBoard()
         {
+            subBoards.Clear();
+            subBoardFinishedStates.Clear();
             for (int i = 0; i< NumberOfSubBoards; i++)
             {
-                subBoards[i].SetupInitialBoard();
-                subBoardFinishedStates[i] = false;
+                subBoards.Add(new TicTacToeBoard(3));
+                subBoardFinishedStates.Add(false);
             }
         }
 
