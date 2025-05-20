@@ -10,7 +10,7 @@ namespace PlayerBoardGame
             while (true)
             {
                 Console.Write($"{prompt} ({min}-{max}): ");
-                string input = Console.ReadLine();
+                string? input = Console.ReadLine();
                 if (int.TryParse(input, out value) && value >= min && value <= max)
                 {
                     return value;
