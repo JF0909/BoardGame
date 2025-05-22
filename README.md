@@ -15,10 +15,12 @@ use three boards). The game ends when all three boards contain a three-in-a-row 
 - Human vs Human
 - Computer vs Human
 2. Moves Validation Check
-3. Game can be able to be saved and restored from any state of play
-4. Track History of games
-5. Moves can be undoable and redoable
-6. Provide Help Menu for better user experience
+3. ComputerPlayer will choose a winning move first, otherwise, random move be made.
+4. Support 3 Game Types: Advanced TicTacToe, Notakto, Gomoku.
+5. Game can be able to be saved and restored from any state of play.
+6. Track History of games.
+7. Moves can be undoable and redoable.
+8. Provide Help Menu for better user experience.
 
 ## Design patterns 
 - `Template Method Pattern` - Used in Game class and its RunGame()method

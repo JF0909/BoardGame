@@ -7,15 +7,16 @@ namespace PlayerBoardGame
     {
         public string Name { get; }
         public Piece PlayerPiece { get; }
-        public Player(string name, Piece piece)
+        protected Player(string name, Piece piece)
         {
             Name = name;
             PlayerPiece = piece;
         }
-        public abstract Move GetMove(Board currentBoard);
+        //public abstract IMoveCommand GetMove(Board currentBoard);
+        public abstract (Game.GameCommand command, Move? moveDetails) GetMove(Board currentBoard);
         public override string ToString()
         {
-            return $"{Name} ({PlayerPiece})";
+            return $"{Name} ({PlayerPiece?.Symbol})";
         }
 
     }
