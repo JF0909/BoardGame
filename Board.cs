@@ -8,7 +8,8 @@ namespace PlayerBoardGame
     {
         public int Width { get; }
         public int Height { get; }
-        protected Piece[,] Cells;
+        public int Size => Width;
+        protected Piece?[,] Cells;
 
         //Initialize the Board with the given size
         public Board(int width, int height)
@@ -19,18 +20,44 @@ namespace PlayerBoardGame
         }
 
         //Place a piece on the board
-        public virtual bool PlacePiece(int row, int col, Piece piece)
+        public virtual bool PlacePiece(int row, int col, Piece? piece)
         {
-            if (IsValidPosition(row, col) && IsCellEmpty(row,col))
+            if (IsValidPosition(row, col))
             {
-                Cells[row,col] = piece;
+
+            }
+            else
+            {
+                return false;
+            }
+
+            //Fix For undo to clear cell
+            if (piece == null)
+            {
+                Cells[row, col] = null!;
                 return true;
             }
-            return false;
+            else
+            {
+                if (IsCellEmpty(row, col))
+                {
+                    Cells[row, col] = piece;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
         }
 
         //Retrieves the piece at the given position
+<<<<<<< HEAD
         public virtual Piece ? GetPiece(int row, int col)
+=======
+        public virtual Piece? GetPiece(int row, int col)
+>>>>>>> 4387e5b (copy file from local)
         {
             return IsValidPosition(row,col) ? Cells[row,col] : null;
         }

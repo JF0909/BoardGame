@@ -59,12 +59,24 @@ namespace PlayerBoardGame
         {
             if (subBoardIndex < 0 || subBoardIndex >= subBoards.Count)
             {
+<<<<<<< HEAD
                 Console.WriteLine($"Error: Invalid sub-board index {subBoardIndex} in PlacePieceOnSubBoard.");
+=======
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"\nError: Invalid sub-board index {subBoardIndex} in PlacePieceOnSubBoard.");
+                Console.ResetColor();
+>>>>>>> 4387e5b (copy file from local)
                 return false;
             }
             if (IsSubBoardFinished(subBoardIndex))
             {
+<<<<<<< HEAD
                 Console.WriteLine("Error: Sub-board {subBoardIndex + 1} is already finished.");
+=======
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nError: Sub-board {subBoardIndex + 1} is already finished.");
+                Console.ResetColor();
+>>>>>>> 4387e5b (copy file from local)
                 return false;
             }
             
@@ -75,31 +87,59 @@ namespace PlayerBoardGame
                 if (!subBoardFinishedStates[subBoardIndex] && CheckThreeInARow(targetSubBoard, piece))
                 {
                     subBoardFinishedStates[subBoardIndex] = true;
+<<<<<<< HEAD
                     Console.WriteLine($"Sub-board {subBoardIndex + 1} is now finished!");
+=======
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine($"Sub-board {subBoardIndex + 1} is now finished!");
+                    Console.ResetColor();
+>>>>>>> 4387e5b (copy file from local)
                 }
                 return true;
 
             }
+<<<<<<< HEAD
             Console.WriteLine($"Error: Invalid move on sub-board {subBoardIndex + 1} at ({row},{col}). Cell not empty or out of bounds.");
             return false;
         }
 
         //Remove piece and re-check method
+=======
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"\nError: Invalid move on sub-board {subBoardIndex + 1} at ({row},{col}). Cell not empty or out of bounds.");
+            Console.ResetColor();
+            return false;
+        }
+
+        //Remove piece and re-check method for NotaktoGame
+>>>>>>> 4387e5b (copy file from local)
         public void RemovePieceOnSubBoard (int subBoardIndex, int row, int col)
         {
             if (subBoardIndex < 0 || subBoardIndex >= subBoards.Count)
             {
+<<<<<<< HEAD
                 Console.WriteLine($"Error: Invalid sub-board index {subBoardIndex} in RemovePieceOnSubBoard.");
+=======
+                Console.WriteLine($"\nError: Invalid sub-board index {subBoardIndex} in RemovePieceOnSubBoard.");
+>>>>>>> 4387e5b (copy file from local)
                 return;
             }
             TicTacToeBoard targetSubBoard = subBoards[subBoardIndex];
             if (!targetSubBoard.IsValidPosition(row, col))
             {
+<<<<<<< HEAD
                 Console.WriteLine($"Error: Invalid coordinates ({row},{col}) for sub-board {subBoardIndex + 1} in RemovePieceOnSubBoard.");
                 return;
             }
 
             targetSubBoard.PlacePiece(row, col, null);
+=======
+                Console.WriteLine($"\nError: Invalid coordinates ({row},{col}) for sub-board {subBoardIndex + 1} in RemovePieceOnSubBoard.");
+                return;
+            }
+
+            targetSubBoard.PlacePiece(row, col, null!);
+>>>>>>> 4387e5b (copy file from local)
             if (CheckThreeInARow(targetSubBoard, _notaktoPiece))
             {
                 subBoardFinishedStates[subBoardIndex] = true;
@@ -164,7 +204,7 @@ namespace PlayerBoardGame
         public override void Display()
         {
             Console.WriteLine();
-            Console.WriteLine("Notato Board:");
+            Console.WriteLine("Notakto Board:");
             Console.WriteLine();
 
             for (int i = 0; i < subBoards.Count; i++)
@@ -197,7 +237,11 @@ namespace PlayerBoardGame
             return null;
         }
 
+<<<<<<< HEAD
         public override bool PlacePiece(int row, int col, Piece piece)
+=======
+        public override bool PlacePiece(int row, int col, Piece? piece)
+>>>>>>> 4387e5b (copy file from local)
         {
             return false;
 

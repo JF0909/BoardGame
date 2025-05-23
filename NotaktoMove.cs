@@ -1,6 +1,9 @@
 namespace PlayerBoardGame
 {
+<<<<<<< HEAD
     //SubBoardIndex as a new property
+=======
+>>>>>>> 4387e5b (copy file from local)
     //To specify which of the three Notakto sub-boards the move applies to.
     public class NotaktoMove: Move
     {

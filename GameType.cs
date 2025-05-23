@@ -6,7 +6,7 @@ namespace PlayerBoardGame
     /// </summary>
     public enum GameType
     {
-        NumericalTicTacToe,
+        TicTacToe,
         Notakto,
         Gomoku
 

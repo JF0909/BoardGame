@@ -45,6 +45,8 @@ namespace PlayerBoardGame
                 Console.Write($"{col + 1,4}");
             }
             Console.WriteLine();
+            Console.WriteLine();
+
 
             for (int row = 0; row < Height; row++)
             {
@@ -54,8 +56,10 @@ namespace PlayerBoardGame
                 for (int col = 0; col < Width; col++)
                 {
                     var piece = Cells[row, col];
-                    Console.Write(piece == null ? "." : piece.ToString(), -3);
+                    String cellDisplay = (piece == null) ? "." : piece.ToString();
+                    Console.Write($" {cellDisplay}  ");
                 }
+                Console.WriteLine();
                 Console.WriteLine();
             }
             Console.WriteLine();
